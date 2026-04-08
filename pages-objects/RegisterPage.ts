@@ -28,7 +28,8 @@ export class RegisterPage {
 
   async fillRegistrationForm() {
     const suffix = Date.now().toString().slice(-4);
-    this.generatedUsername = `${process.env.TEST_USERNAME!}_${suffix}`;
+    const base = process.env.TEST_USERNAME!.slice(0, 10); // cap at 10 so base_XXXX ≤ 15
+    this.generatedUsername = `${base}_${suffix}`;
     const [localPart, domain] = process.env.TEST_EMAIL!.split('@');
     const email = `${localPart}_${suffix}@${domain}`;
     const password = process.env.TEST_PASSWORD!;

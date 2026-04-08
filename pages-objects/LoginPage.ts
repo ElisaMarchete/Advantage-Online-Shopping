@@ -25,6 +25,8 @@ export class LoginPage {
     name: "CREATE NEW ACCOUNT",
   });
   private loggedInUsername = this.page.locator("span.hi-user").first();
+  private loginResultMessage = this.page.locator('#signInResultMessage');
+  private closeButton = this.page.locator('.loginPopUpCloseBtn');
 
   // — Actions —
   async goto() {
@@ -48,6 +50,11 @@ export class LoginPage {
 
   async clickCreateAccount() {
     await this.createAccountLink.click();
+  }
+
+  async closeModal() {
+    await this.closeButton.click();
+    await this.usernameInput.waitFor({ state: 'hidden', timeout: 5000 });
   }
 
   async signOut() {
@@ -118,6 +125,16 @@ export class LoginPage {
 
   async verifyCreateAccountLink() {
     await expect(this.createAccountLink).toBeVisible();
+  }
+
+  // Returns true if a login error message is displayed (credentials were rejected)
+  async hasLoginError(): Promise<boolean> {
+    try {
+      await expect(this.loginResultMessage).not.toHaveText('OR', { timeout: 8000 });
+      return true; // text changed away from "OR" → error appeared
+    } catch {
+      return false; // timeout or element gone → login succeeded / modal closed
+    }
   }
 
   async verifyLoggedIn(username: string) {

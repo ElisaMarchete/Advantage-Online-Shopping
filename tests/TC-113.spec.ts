@@ -2,9 +2,11 @@
  * TC-113 — Verify Content and Elements of the Sign-In Modal
  * https://advantageonlineshopping.com
  */
-import { test } from '../fixtures/index';
+import { test } from "../fixtures/index";
 
-test('Verify Content and Elements of the Sign-In Modal', async ({ loginPage }) => {
+test("Verify Content and Elements of the Sign-In Modal", async ({
+  loginPage,
+}) => {
   await loginPage.goto();
   await loginPage.openModal();
 
