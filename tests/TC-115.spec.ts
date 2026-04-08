@@ -1,10 +1,6 @@
 /**
  * TC-115 — Verify Sign-In Functionality with Valid Credentials
  * https://advantageonlineshopping.com
- *
- * Primary path : sign in using credentials fixture (TEST_USERNAME / TEST_PASSWORD from .env)
- * Fallback path: if those credentials are rejected, register a fresh account
- *                and sign in with the new credentials instead.
  */
 import { test } from "../fixtures/index";
 
@@ -18,7 +14,10 @@ test(
     await loginPage.verifyModalIsDisplayed();
 
     // Step 2: Attempt sign-in with credentials from fixture
-    await loginPage.loginWithCredentials(credentials.username, credentials.password);
+    await loginPage.loginWithCredentials(
+      credentials.username,
+      credentials.password,
+    );
 
     let activeUsername: string;
 

@@ -63,9 +63,11 @@ export class LoginPage {
       if (signOutEl) signOutEl.click();
     });
     await this.loggedInUsername.waitFor({ state: 'hidden', timeout: 10000 });
+    await this.page.waitForTimeout(2000);
   }
 
   async loginWithCredentials(username: string, password: string) {
+    await this.page.waitForTimeout(2000);
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.page.evaluate(() => {
@@ -125,6 +127,49 @@ export class LoginPage {
 
   async verifyCreateAccountLink() {
     await expect(this.createAccountLink).toBeVisible();
+  }
+
+  async fillUsernameOnly(username: string) {
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill("");
+  }
+
+  async fillPasswordOnly(password: string) {
+    await this.usernameInput.fill("");
+    await this.passwordInput.fill(password);
+  }
+
+  async fillBothFields(username: string, password: string) {
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
+  }
+
+  async verifySignInButtonDisabled() {
+    await expect(this.signInButton).toBeDisabled();
+  }
+
+  async verifySignInButtonEnabled() {
+    await expect(this.signInButton).toBeEnabled();
+  }
+
+  async verifyRedirectedToRegisterPage() {
+    await this.page.waitForURL("**/register", { timeout: 10000 });
+  }
+
+  async checkRememberMe() {
+    await this.rememberMeCheckbox.check();
+    await expect(this.rememberMeCheckbox).toBeChecked();
+  }
+
+  async clickSignInButton() {
+    await this.page.evaluate(() => {
+      (document.getElementById("sign_in_btn") as HTMLElement).click();
+    });
+  }
+
+  async verifyCredentialsPreFilled(username: string) {
+    await expect(this.usernameInput).toHaveValue(username);
+    await expect(this.passwordInput).not.toHaveValue("");
   }
 
   // Returns true if a login error message is displayed (credentials were rejected)
