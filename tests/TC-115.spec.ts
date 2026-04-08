@@ -2,7 +2,7 @@
  * TC-115 — Verify Sign-In Functionality with Valid Credentials
  * https://advantageonlineshopping.com
  *
- * Primary path : sign in using TEST_USERNAME / TEST_PASSWORD from .env
+ * Primary path : sign in using credentials fixture (TEST_USERNAME / TEST_PASSWORD from .env)
  * Fallback path: if those credentials are rejected, register a fresh account
  *                and sign in with the new credentials instead.
  */
@@ -11,16 +11,14 @@ import { test } from "../fixtures/index";
 test(
   "Verify Sign-In Functionality with Valid Credentials",
   { timeout: 60000 },
-  async ({ page, loginPage, registerPage }) => {
+  async ({ page, loginPage, registerPage, credentials }) => {
     // Step 1: Navigate to homepage and open the Sign-In modal
     await loginPage.goto();
     await loginPage.openModal();
     await loginPage.verifyModalIsDisplayed();
 
-    // Step 2: Attempt sign-in with .env credentials
-    const envUsername = process.env.TEST_USERNAME!;
-    const envPassword = process.env.TEST_PASSWORD!;
-    await loginPage.loginWithCredentials(envUsername, envPassword);
+    // Step 2: Attempt sign-in with credentials from fixture
+    await loginPage.loginWithCredentials(credentials.username, credentials.password);
 
     let activeUsername: string;
 
@@ -52,7 +50,7 @@ test(
       activeUsername = registerPage.getGeneratedUsername();
     } else {
       // Primary path: .env credentials worked
-      activeUsername = envUsername;
+      activeUsername = credentials.username;
     }
 
     // Step 3 & 4: Verify user is logged in and username appears in header

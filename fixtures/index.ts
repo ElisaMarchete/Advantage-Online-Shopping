@@ -2,9 +2,15 @@ import { test as base } from '@playwright/test';
 import { LoginPage } from '../pages-objects/LoginPage';
 import { RegisterPage } from '../pages-objects/RegisterPage';
 
+type Credentials = {
+  username: string;
+  password: string;
+};
+
 type Fixtures = {
   loginPage: LoginPage;
   registerPage: RegisterPage;
+  credentials: Credentials;
 };
 
 export const test = base.extend<Fixtures>({
@@ -13,6 +19,12 @@ export const test = base.extend<Fixtures>({
   },
   registerPage: async ({ page }, use) => {
     await use(new RegisterPage(page));
+  },
+  credentials: async ({}, use) => {
+    await use({
+      username: process.env.TEST_USERNAME!,
+      password: process.env.TEST_PASSWORD!,
+    });
   },
 });
 
