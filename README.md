@@ -37,7 +37,7 @@ The tests are passing in April 2026. Refer to the videos below for a visual refe
 > **Note:** Test results may vary if Advantage Online Shopping’s interface has been updated since this recording.
 
 🎬 **Advantage Online Shopping | Playwright Automation Test Execution – April 2026**  
-**👉 [Click to View Demo](https://www.loom.com/)**
+**👉 [Click to View Demo](https://www.loom.com/share/a881541b5d2a487488c03bf379c369f1)**
 
 ## 🚀 Running Playwright Tests
 
