@@ -11,6 +11,8 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   reporter: 'list',
+  timeout: 90000,
+  expect: { timeout: 10000 },
   use: {
     baseURL: 'https://advantageonlineshopping.com',
     trace: 'off',

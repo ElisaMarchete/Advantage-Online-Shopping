@@ -39,7 +39,7 @@ export class LoginPage {
     await this.page
       .getByRole("link", { name: "UserMenu" })
       .click({ force: true });
-    await this.usernameInput.waitFor({ state: "visible", timeout: 10000 });
+    await this.usernameInput.waitFor({ state: "visible" });
   }
 
   async login(username: string, password: string) {
@@ -54,7 +54,7 @@ export class LoginPage {
 
   async closeModal() {
     await this.closeButton.click();
-    await this.usernameInput.waitFor({ state: 'hidden', timeout: 5000 });
+    await this.usernameInput.waitFor({ state: 'hidden' });
   }
 
   async signOut() {
@@ -62,12 +62,14 @@ export class LoginPage {
       const signOutEl = document.querySelector<HTMLElement>('[ng-click="signOut($event)"]');
       if (signOutEl) signOutEl.click();
     });
-    await this.loggedInUsername.waitFor({ state: 'hidden', timeout: 10000 });
-    await this.page.waitForTimeout(2000);
+    await this.loggedInUsername.waitFor({ state: 'hidden' });
+    // Wait for the UserMenu link to be interactive before proceeding
+    await this.page.getByRole('link', { name: 'UserMenu' }).waitFor({ state: 'visible' });
   }
 
   async loginWithCredentials(username: string, password: string) {
-    await this.page.waitForTimeout(2000);
+    // Wait for the sign-in button to be ready before interacting
+    await this.signInButton.waitFor({ state: 'visible' });
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.page.evaluate(() => {
@@ -153,7 +155,7 @@ export class LoginPage {
   }
 
   async verifyRedirectedToRegisterPage() {
-    await this.page.waitForURL("**/register", { timeout: 10000 });
+    await this.page.waitForURL("**/register");
   }
 
   async checkRememberMe() {
@@ -175,7 +177,7 @@ export class LoginPage {
   // Returns true if a login error message is displayed (credentials were rejected)
   async hasLoginError(): Promise<boolean> {
     try {
-      await expect(this.loginResultMessage).not.toHaveText('OR', { timeout: 8000 });
+      await expect(this.loginResultMessage).not.toHaveText('OR');
       return true; // text changed away from "OR" → error appeared
     } catch {
       return false; // timeout or element gone → login succeeded / modal closed
@@ -183,7 +185,8 @@ export class LoginPage {
   }
 
   async verifyLoggedIn(username: string) {
-    await expect(this.loggedInUsername).not.toHaveClass(/ng-hide/, { timeout: 10000 });
+    await this.loggedInUsername.waitFor({ state: 'visible' });
+    await expect(this.loggedInUsername).not.toHaveClass(/ng-hide/);
     await expect(this.loggedInUsername).toContainText(username);
   }
 }

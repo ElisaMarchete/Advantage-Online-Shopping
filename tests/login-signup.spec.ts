@@ -16,7 +16,7 @@ test.describe('Sign Up - User Registration and Sign In - Login Authentication', 
   test('User Registration - Create New Account', async ({ page, loginPage, registerPage }) => {
     // Click "CREATE NEW ACCOUNT" → redirected to registration page
     await loginPage.clickCreateAccount();
-    await page.waitForURL('**/register', { timeout: 10000 });
+    await page.waitForURL('**/register');
 
     // Fill in all required fields
     await registerPage.fillRegistrationForm();
@@ -28,7 +28,7 @@ test.describe('Sign Up - User Registration and Sign In - Login Authentication', 
     await registerPage.submitRegistration();
 
     // Account is created and user is auto-logged in — app redirects to homepage
-    await page.waitForURL('**/advantageonlineshopping.com/#/', { timeout: 15000 });
+    await page.waitForURL('**/advantageonlineshopping.com/#/');
 
     // Verify the username is visible next to the user menu icon in the header
     await registerPage.verifyLoggedIn();
@@ -89,7 +89,6 @@ test.describe('Sign Up - User Registration and Sign In - Login Authentication', 
   // TC-115
   test(
     'Verify Sign-In Functionality with Valid Credentials',
-    { timeout: 60000 },
     async ({ page, loginPage, registerPage, credentials }) => {
       // Attempt sign-in with credentials from fixture
       await loginPage.loginWithCredentials(credentials.username, credentials.password);
@@ -105,12 +104,12 @@ test.describe('Sign Up - User Registration and Sign In - Login Authentication', 
         // Open modal → click CREATE NEW ACCOUNT → register
         await loginPage.openModal();
         await loginPage.clickCreateAccount();
-        await page.waitForURL('**/register', { timeout: 10000 });
+        await page.waitForURL('**/register');
 
         await registerPage.fillRegistrationForm();
         await registerPage.acceptTerms();
         await registerPage.submitRegistration();
-        await page.waitForURL('**/advantageonlineshopping.com/#/', { timeout: 15000 });
+        await page.waitForURL('**/advantageonlineshopping.com/#/');
 
         // Sign out to exercise the sign-in flow with the newly created credentials
         await loginPage.signOut();
@@ -133,7 +132,6 @@ test.describe('Sign Up - User Registration and Sign In - Login Authentication', 
   // TC-117
   test(
     'Verify "Remember Me" Checkbox Visibility and Functionality on Sign-In Modal',
-    { timeout: 90000 },
     async ({ page, loginPage, registerPage, credentials }) => {
       // Verify "Remember Me" checkbox is visible and unchecked by default
       await loginPage.verifyRememberMeCheckbox();
@@ -157,12 +155,12 @@ test.describe('Sign Up - User Registration and Sign In - Login Authentication', 
 
         await loginPage.openModal();
         await loginPage.clickCreateAccount();
-        await page.waitForURL('**/register', { timeout: 10000 });
+        await page.waitForURL('**/register');
 
         await registerPage.fillRegistrationForm();
         await registerPage.acceptTerms();
         await registerPage.submitRegistration();
-        await page.waitForURL('**/advantageonlineshopping.com/#/', { timeout: 15000 });
+        await page.waitForURL('**/advantageonlineshopping.com/#/');
 
         // Sign out so we can exercise the Remember Me flow with the new account
         await loginPage.signOut();

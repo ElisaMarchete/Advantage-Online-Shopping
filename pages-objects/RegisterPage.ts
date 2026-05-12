@@ -51,7 +51,8 @@ export class RegisterPage {
 
   // — Assertions —
   async verifyLoggedIn() {
-    await expect(this.loggedInUsername).not.toHaveClass(/ng-hide/, { timeout: 10000 });
+    await this.loggedInUsername.waitFor({ state: 'visible' });
+    await expect(this.loggedInUsername).not.toHaveClass(/ng-hide/);
     await expect(this.loggedInUsername).toContainText(this.generatedUsername);
   }
 }
